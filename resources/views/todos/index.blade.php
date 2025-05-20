@@ -233,7 +233,7 @@
             
             <!-- Keyboard Shortcuts Help -->
             <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <h3 class="text-sm font-medium text-gray-700 mb-2">Keyboard Shortcuts</h3>
+                <h3 class="text-sm font-medium text-gray-700 mb-2">Keyboard Shortcuts...</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div class="flex items-center">
                         <kbd class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Alt</kbd>
