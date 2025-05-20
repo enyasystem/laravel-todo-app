@@ -1,0 +1,20 @@
+{
+    "name": "hppc/laravel-todo",
+    "description": "A simple Laravel-based todo application.",
+    "require-dev": {
+        "laravel/laravel": "^10.3"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Hppc\\LaravelTodo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "enyasystem",
+            "email": "enyaelvis@gmail.com"
+        }
+    ],
+    "require": {}
+}
