@@ -1,6 +1,33 @@
+{{-- vscode-css-disable-next-line --}}
 @extends('layouts.app')
 
 @section('content')
+<style>
+    /* Only custom classes, no Tailwind utility classes here */
+    .priority-indicator {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 40px 40px 0;
+        border-top-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+        z-index: 10;
+    }
+    .priority-low {
+        border-right-color: #22c55e;
+    }
+    .priority-medium {
+        border-right-color: #facc15;
+    }
+    .priority-high {
+        border-right-color: #ef4444;
+    }
+</style>
 <div x-data="todoApp()" class="bg-white overflow-hidden shadow-xl rounded-lg">
     <div class="p-6 bg-white">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
@@ -143,7 +170,7 @@
                     </span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div class="bg-primary-600 h-2.5 rounded-full" style="width: {{ ($todos->where('completed', true)->count() / $todos->count()) * 100 }}%"></div>
+                    <div class="bg-primary-600 h-2.5 rounded-full" style="width: {{ $progressPercentage ?? 0 }}%"></div>
                 </div>
             </div>
             
@@ -173,7 +200,7 @@
                                 </h3>
                                 <div class="flex items-center space-x-1">
                                     @if($todo->category)
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background-color: {{ $todo->category->color }}20; color: {{ $todo->category->color }};">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background-color: {{ $todo->category->color }}; color: {{ $todo->category->color }};">
                                             {{ $todo->category->name }}
                                         </span>
                                     @endif
@@ -257,15 +284,12 @@
     function todoApp() {
         return {
             quickAddTitle: '',
-            
             init() {
                 this.initSortable();
             },
-            
             initSortable() {
                 const taskList = document.getElementById('task-list');
                 if (!taskList) return;
-                
                 const self = this;
                 const sortable = new Sortable(taskList, {
                     animation: 150,
@@ -276,24 +300,18 @@
                     }
                 });
             },
-            
             updatePositions() {
                 const tasks = document.querySelectorAll('.task-card');
                 const positions = [];
-                
                 tasks.forEach((task, index) => {
                     const id = task.dataset.id;
                     positions.push({
                         id: id,
                         position: index
                     });
-                    
-                    // Update the data-position attribute
                     task.dataset.position = index;
                 });
-                
-                // Send the updated positions to the server
-                window.axios.post('{{ route('todos.update-positions') }}', {
+                window.axios.post("{{ route('todos.update-positions') }}", {
                     positions: positions
                 }).then(response => {
                     if (response.success) {
@@ -301,14 +319,12 @@
                     }
                 });
             },
-            
             toggleComplete(id) {
                 window.axios.patch(`/todos/${id}/toggle-complete`).then(response => {
                     if (response.success) {
                         const taskElement = document.getElementById(`task-${id}`);
                         const titleElement = taskElement.querySelector('h3');
                         const descriptionElement = taskElement.querySelector('p');
-                        
                         if (response.completed) {
                             titleElement.classList.add('line-through', 'text-gray-500');
                             descriptionElement.classList.add('line-through', 'text-gray-400');
@@ -316,14 +332,10 @@
                             titleElement.classList.remove('line-through', 'text-gray-500');
                             descriptionElement.classList.remove('line-through', 'text-gray-400');
                         }
-                        
-                        // Add animation class
                         taskElement.classList.add('task-complete-animation');
                         setTimeout(() => {
                             taskElement.classList.remove('task-complete-animation');
                         }, 500);
-                        
-                        // Update the complete button icon
                         const completeButton = taskElement.querySelector('button[title^="Mark as"]');
                         if (completeButton) {
                             if (response.completed) {
@@ -342,58 +354,47 @@
                                 completeButton.title = "Mark as complete";
                             }
                         }
-                        
-                        // Update the progress bar
                         this.updateProgressBar();
-                        
                         showToast(response.message);
                     }
                 });
             },
-            
             updateProgressBar() {
                 const completedTasks = document.querySelectorAll('.task-card h3.line-through').length;
                 const totalTasks = document.querySelectorAll('.task-card').length;
                 const progressBar = document.querySelector('.bg-primary-600.h-2\\.5');
                 const progressText = document.querySelector('.text-sm.font-medium.text-gray-700:last-child');
-                
                 if (progressBar && progressText) {
                     const percentage = (completedTasks / totalTasks) * 100;
                     progressBar.style.width = `${percentage}%`;
                     progressText.textContent = `${completedTasks} / ${totalTasks} completed`;
                 }
             },
-            
             toggleQuickAdd() {
                 const quickAddForm = document.getElementById('quick-add-form');
                 quickAddForm.classList.toggle('open');
-                
                 if (quickAddForm.classList.contains('open')) {
                     setTimeout(() => {
                         quickAddForm.querySelector('input').focus();
                     }, 100);
                 }
             },
-            
             quickAddTask() {
                 if (!this.quickAddTitle.trim()) {
                     showToast('Please enter a task title', 'error');
                     return;
                 }
-                
-                window.axios.post('{{ route('todos.quick-add') }}', {
+                window.axios.post("{{ route('todos.quick-add') }}", {
                     title: this.quickAddTitle
                 }).then(response => {
                     if (response.success) {
                         showToast(response.message);
                         this.quickAddTitle = '';
-                        
-                        // Reload the page to show the new task
                         window.location.reload();
                     }
                 });
             }
-        }
+        };
     }
 </script>
 @endpush

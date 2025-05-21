@@ -11,6 +11,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->routes(function () {
+            require base_path('routes/web.php');
+            require base_path('routes/api.php');
+        });
     }
 }

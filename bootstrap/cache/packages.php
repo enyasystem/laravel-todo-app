@@ -1,10 +1,4 @@
 <?php return array (
-  'laravel/laravel' => 
-  array (
-    'dont-discover' => 
-    array (
-    ),
-  ),
   'laravel/sanctum' => 
   array (
     'providers' => 
