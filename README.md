@@ -1,6 +1,3 @@
-![Laravel Todo App Screenshot](public/screenshot.png)
-![Laravel Todo App Screenshot](public/screenshot1.png)
-
 # 📝 Laravel Todo App
 
 A modern, full-featured Todo application built with Laravel, Blade, Tailwind CSS, and Vite. Organize your tasks, manage categories, and boost your productivity with a beautiful and responsive UI.
@@ -89,3 +86,9 @@ MIT
 ---
 
 Made with ❤️ using Laravel, Blade, and Tailwind CSS.
+
+
+![Laravel Todo App Screenshot](public/screenshot.png)
+![Laravel Todo App Screenshot](public/screenshot1.png)
+![Laravel Todo App Screenshot](public/add_task.png)
+
