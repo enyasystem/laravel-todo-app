@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@if (!isset($errors))
+    @php $errors = new \Illuminate\Support\ViewErrorBag; @endphp
+@endif
 <div class="bg-white overflow-hidden shadow-xl rounded-lg">
     <div class="p-6 bg-white">
         <div class="flex items-center mb-6">
