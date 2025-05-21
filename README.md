@@ -26,7 +26,7 @@ A modern, full-featured Todo application built with Laravel, Blade, Tailwind CSS
 
 1. **Clone the repository**
    ```sh
-   git clone https://github.com/your-username/laravel-todo.git
+   git clone https://github.com/enyasystem/laravel-todo-app.git
    cd laravel-todo
    ```
 2. **Install PHP dependencies**
