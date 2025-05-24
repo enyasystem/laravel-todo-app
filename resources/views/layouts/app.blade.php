@@ -152,6 +152,17 @@
                             Todo Master
                         </a>
                     </div>
+                    <!-- Mobile menu button -->
+                    <div class="md:hidden flex items-center">
+                        <button @click="open = !open" x-data="{ open: false }" :aria-expanded="open.toString()" aria-controls="mobile-menu" class="text-white focus:outline-none focus:ring-2 focus:ring-white rounded p-2" aria-label="Open main menu">
+                            <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
                     <nav class="hidden md:flex space-x-4">
                         <a href="{{ route('todos.index') }}" class="text-white hover:text-primary-100 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('todos.*') ? 'bg-primary-700' : '' }}">
                             Tasks
@@ -161,14 +172,23 @@
                         </a>
                     </nav>
                 </div>
-                <div class="mt-4 max-w-2xl">
-                    <h1 class="text-3xl font-extrabold text-white sm:text-4xl">
-                        Organize your tasks
-                    </h1>
-                    <p class="mt-3 text-lg text-primary-100">
-                        A simple and elegant way to manage your daily tasks and boost your productivity.
-                    </p>
-                </div>
+                <!-- Mobile menu -->
+                <nav id="mobile-menu" x-data="{ open: false }" x-show="open" @click.away="open = false" class="md:hidden mt-4 bg-primary-700 rounded shadow-lg" x-cloak>
+                    <a href="{{ route('todos.index') }}" class="block text-white px-4 py-2 rounded hover:bg-primary-600 {{ request()->routeIs('todos.*') ? 'bg-primary-800' : '' }}">
+                        Tasks
+                    </a>
+                    <a href="{{ route('categories.index') }}" class="block text-white px-4 py-2 rounded hover:bg-primary-600 {{ request()->routeIs('categories.*') ? 'bg-primary-800' : '' }}">
+                        Categories
+                    </a>
+                </nav>
+            </div>
+            <div class="mt-4 max-w-2xl">
+                <h1 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Organize your tasks
+                </h1>
+                <p class="mt-3 text-lg text-primary-100">
+                    A simple and elegant way to manage your daily tasks and boost your productivity.
+                </p>
             </div>
         </header>
 
