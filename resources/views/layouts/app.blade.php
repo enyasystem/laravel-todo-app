@@ -130,6 +130,20 @@
         .quick-add-form.open {
             max-height: 60px;
         }
+        
+        .btn-nav {
+            @apply px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2;
+            background: transparent;
+            color: white;
+        }
+        .btn-nav:hover {
+            background-color: #0ea5e9;
+            color: #fff;
+        }
+        .btn-nav.active {
+            background-color: #0369a1;
+            color: #fff;
+        }
     </style>
     
     <!-- Sortable.js for drag and drop -->
@@ -164,10 +178,10 @@
                         </button>
                     </div>
                     <nav class="hidden md:flex space-x-4">
-                        <a href="{{ route('todos.index') }}" class="text-white hover:text-primary-100 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('todos.*') ? 'bg-primary-700' : '' }}">
+                        <a href="{{ route('todos.index') }}" class="btn-nav {{ request()->routeIs('todos.*') ? 'active' : '' }}">
                             Tasks
                         </a>
-                        <a href="{{ route('categories.index') }}" class="text-white hover:text-primary-100 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('categories.*') ? 'bg-primary-700' : '' }}">
+                        <a href="{{ route('categories.index') }}" class="btn-nav {{ request()->routeIs('categories.*') ? 'active' : '' }}">
                             Categories
                         </a>
                     </nav>
