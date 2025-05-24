@@ -250,7 +250,7 @@
             show = true; 
             message = $event.detail.message; 
             type = $event.detail.type || 'success';
-            setTimeout(() => { show = false }, 3000)
+            setTimeout(() => { show = false }, 5000)
          "
          :class="{ 'error': type === 'error' }"
          x-cloak
@@ -279,13 +279,21 @@
 
     <script>
         // Helper function to show toast notifications
-        function showToast(message, type = 'success') {
+        function showToast(message, type = 'success', duration = 5000) {
             window.dispatchEvent(new CustomEvent('toast', {
                 detail: {
                     message: message,
                     type: type
                 }
             }));
+            // Manually keep toast open longer
+            const toastDiv = document.getElementById('toast');
+            if (toastDiv) {
+                toastDiv.setAttribute('x-show', 'true');
+                setTimeout(() => {
+                    toastDiv.setAttribute('x-show', 'false');
+                }, duration);
+            }
         }
         
         // Setup CSRF token for AJAX requests
@@ -313,6 +321,17 @@
                             'Accept': 'application/json'
                         },
                         body: JSON.stringify(data)
+                    }).then(response => response.json());
+                },
+                delete: function(url, data = {}) {
+                    return fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Accept': 'application/json'
+                        },
+                        // Only send body if data is not empty
+                        ...(Object.keys(data).length > 0 ? { body: JSON.stringify(data) } : {})
                     }).then(response => response.json());
                 }
             };

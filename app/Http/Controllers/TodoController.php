@@ -167,9 +167,12 @@ class TodoController extends Controller
     public function destroy(Todo $todo)
     {
         $todo->delete();
-
         // Clear the cache when a todo is deleted
-        Cache::forget('todos');
+        \Cache::forget('todos');
+
+        if (request()->expectsJson() || request()->ajax()) {
+            return response()->json(['success' => true]);
+        }
 
         return redirect()->route('todos.index')
             ->with('success', 'Task deleted successfully.');
