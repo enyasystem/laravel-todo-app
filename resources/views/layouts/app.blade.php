@@ -131,19 +131,22 @@
             max-height: 60px;
         }
         
+        
+        /*
         .btn-nav {
-            @apply px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2;
-            background: transparent;
-            color: white;
+            /* Use Tailwind utility classes directly in the HTML for best compatibility. Remove @apply from inline <style> block. */
+            /* background: transparent; */
+            /* color: white; */
         }
         .btn-nav:hover {
-            background-color: #0ea5e9;
-            color: #fff;
+            /* background-color: #0ea5e9; */
+            /* color: #fff; */
         }
         .btn-nav.active {
-            background-color: #0369a1;
-            color: #fff;
+            /* background-color: #0369a1; */
+            /* color: #fff; */
         }
+        */
     </style>
     
     <!-- Sortable.js for drag and drop -->
@@ -156,16 +159,23 @@
     <div class="min-h-screen flex flex-col">
         <!-- Hero Header -->
         <header class="bg-gradient-to-r from-primary-600 to-primary-800 shadow-lg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    <a href="{{ route('todos.index') }}" class="ml-3 text-2xl font-bold text-white">
+                        Todo Master
+                    </a>
+                </div>
+                <div class="flex items-center mt-4 sm:mt-0 space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button id="darkModeToggle" class="text-white bg-primary-700 hover:bg-primary-900 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-white" aria-label="Toggle dark mode">
+                        <svg id="darkModeIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path id="sunIcon" style="display:block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.66-8.66l-.71.71M4.05 19.07l-.71.71M21 12h-1M4 12H3m16.95 7.07l-.71-.71M6.34 6.34l-.71-.71M12 7a5 5 0 100 10 5 5 0 000-10z" />
+                            <path id="moonIcon" style="display:none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" />
                         </svg>
-                        <a href="{{ route('todos.index') }}" class="ml-3 text-2xl font-bold text-white">
-                            Todo Master
-                        </a>
-                    </div>
+                    </button>
                     <!-- Mobile menu button -->
                     <div class="md:hidden flex items-center">
                         <button @click="open = !open" x-data="{ open: false }" :aria-expanded="open.toString()" aria-controls="mobile-menu" class="text-white focus:outline-none focus:ring-2 focus:ring-white rounded p-2" aria-label="Open main menu">
@@ -186,15 +196,6 @@
                         </a>
                     </nav>
                 </div>
-                <!-- Mobile menu -->
-                <nav id="mobile-menu" x-data="{ open: false }" x-show="open" @click.away="open = false" class="md:hidden mt-4 bg-primary-700 rounded shadow-lg" x-cloak>
-                    <a href="{{ route('todos.index') }}" class="block text-white px-4 py-2 rounded hover:bg-primary-600 {{ request()->routeIs('todos.*') ? 'bg-primary-800' : '' }}">
-                        Tasks
-                    </a>
-                    <a href="{{ route('categories.index') }}" class="block text-white px-4 py-2 rounded hover:bg-primary-600 {{ request()->routeIs('categories.*') ? 'bg-primary-800' : '' }}">
-                        Categories
-                    </a>
-                </nav>
             </div>
             <div class="mt-4 max-w-2xl">
                 <h1 class="text-3xl font-extrabold text-white sm:text-4xl">
@@ -344,7 +345,59 @@
                 }
             });
         });
+        
+        // Dark mode toggle logic
+        (function() {
+            const toggle = document.getElementById('darkModeToggle');
+            const icon = document.getElementById('darkModeIcon');
+            const sun = document.getElementById('sunIcon');
+            const moon = document.getElementById('moonIcon');
+            function setDarkMode(on) {
+                if (on) {
+                    document.documentElement.classList.add('dark');
+                    sun.style.display = 'none';
+                    moon.style.display = 'block';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    sun.style.display = 'block';
+                    moon.style.display = 'none';
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+            if (localStorage.getItem('theme') === 'dark' || (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
+                setDarkMode(true);
+            }
+            toggle && toggle.addEventListener('click', function() {
+                setDarkMode(!document.documentElement.classList.contains('dark'));
+            });
+        })();
     </script>
+    <style>
+        body.dark, .dark body {
+            background-color: #18181b;
+            color: #f3f4f6;
+        }
+        .dark .bg-white {
+            background-color: #23272f !important;
+        }
+        .dark .text-gray-500 {
+            color: #a1a1aa !important;
+        }
+        .dark .bg-gray-50 {
+            background-color: #18181b !important;
+        }
+        .dark .shadow-lg {
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5) !important;
+        }
+        .dark .toast {
+            background-color: #334155;
+            color: #f3f4f6;
+        }
+        .dark .toast.error {
+            background-color: #b91c1c;
+        }
+    </style>
     
     @stack('scripts')
 </body>
