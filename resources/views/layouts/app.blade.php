@@ -169,13 +169,6 @@
                     </a>
                 </div>
                 <div class="flex items-center mt-4 sm:mt-0 space-x-4">
-                    <!-- Dark mode toggle -->
-                    <button id="darkModeToggle" class="text-white bg-primary-700 hover:bg-primary-900 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-white" aria-label="Toggle dark mode">
-                        <svg id="darkModeIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path id="sunIcon" style="display:block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.66-8.66l-.71.71M4.05 19.07l-.71.71M21 12h-1M4 12H3m16.95 7.07l-.71-.71M6.34 6.34l-.71-.71M12 7a5 5 0 100 10 5 5 0 000-10z" />
-                            <path id="moonIcon" style="display:none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" />
-                        </svg>
-                    </button>
                     <!-- Mobile menu button -->
                     <div class="md:hidden flex items-center">
                         <button @click="open = !open" x-data="{ open: false }" :aria-expanded="open.toString()" aria-controls="mobile-menu" class="text-white focus:outline-none focus:ring-2 focus:ring-white rounded p-2" aria-label="Open main menu">
@@ -345,60 +338,7 @@
                 }
             });
         });
-        
-        // Dark mode toggle logic
-        (function() {
-            const toggle = document.getElementById('darkModeToggle');
-            const icon = document.getElementById('darkModeIcon');
-            const sun = document.getElementById('sunIcon');
-            const moon = document.getElementById('moonIcon');
-            function setDarkMode(on) {
-                if (on) {
-                    document.documentElement.classList.add('dark');
-                    sun.style.display = 'none';
-                    moon.style.display = 'block';
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    sun.style.display = 'block';
-                    moon.style.display = 'none';
-                    localStorage.setItem('theme', 'light');
-                }
-            }
-            if (localStorage.getItem('theme') === 'dark' || (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
-                setDarkMode(true);
-            }
-            toggle && toggle.addEventListener('click', function() {
-                setDarkMode(!document.documentElement.classList.contains('dark'));
-            });
-        })();
     </script>
-    <style>
-        body.dark, .dark body {
-            background-color: #18181b;
-            color: #f3f4f6;
-        }
-        .dark .bg-white {
-            background-color: #23272f !important;
-        }
-        .dark .text-gray-500 {
-            color: #a1a1aa !important;
-        }
-        .dark .bg-gray-50 {
-            background-color: #18181b !important;
-        }
-        .dark .shadow-lg {
-            box-shadow: 0 4px 24px rgba(0,0,0,0.5) !important;
-        }
-        .dark .toast {
-            background-color: #334155;
-            color: #f3f4f6;
-        }
-        .dark .toast.error {
-            background-color: #b91c1c;
-        }
-    </style>
-    
     @stack('scripts')
 </body>
 </html>
